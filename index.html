@@ -84,18 +84,20 @@
 
         /* Calendar View */
         .calendar-months {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
             margin-top: 20px;
+            max-width: 100%;
         }
 
         .month-calendar {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             overflow: hidden;
+            width: 100%;
         }
 
         .month-header {
@@ -112,33 +114,33 @@
         .weekday-headers {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .weekday-header {
             text-align: center;
             font-weight: 700;
             color: #667eea;
-            font-size: 12px;
-            padding: 8px 0;
+            font-size: 14px;
+            padding: 12px 0;
             text-transform: uppercase;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 12px;
         }
 
         .calendar-day {
             aspect-ratio: 1;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 6px 4px;
+            padding: 10px 6px;
             text-align: center;
-            font-size: 11px;
-            min-height: 90px;
+            font-size: 12px;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -160,11 +162,31 @@
             border: 2px solid #667eea;
         }
 
+        .calendar-day.has-half-day {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(25, 118, 210, 0.15) 100%);
+            border: 2px solid #2196F3;
+        }
+
+        .calendar-day.has-full-day {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(123, 31, 162, 0.15) 100%);
+            border: 2px solid #9C27B0;
+        }
+
+        .calendar-day.has-vacation {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 87, 34, 0.15) 100%);
+            border: 2px solid #ff9800;
+        }
+
+        .calendar-day.has-school {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(229, 57, 53, 0.15) 100%);
+            border: 2px solid #f44336;
+        }
+
         .day-number {
             font-weight: 700;
             color: #333;
-            margin-bottom: 3px;
-            font-size: 12px;
+            margin-bottom: 5px;
+            font-size: 15px;
         }
 
         .calendar-day.other-month .day-number {
@@ -172,12 +194,12 @@
         }
 
         .camp-indicator {
-            font-size: 9px;
+            font-size: 11px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2px 3px;
-            border-radius: 3px;
-            margin-bottom: 2px;
+            padding: 4px 5px;
+            border-radius: 4px;
+            margin-bottom: 4px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -185,27 +207,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .camp-price {
             font-weight: 700;
             color: white;
             background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            padding: 3px 4px;
-            border-radius: 3px;
-            font-size: 10px;
-            margin-top: 2px;
+            padding: 5px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 4px;
             width: 100%;
         }
 
         .camp-duration {
-            font-size: 8px;
+            font-size: 10px;
             background: #ff9800;
             color: white;
-            padding: 2px 3px;
-            border-radius: 2px;
-            margin-top: 2px;
+            padding: 4px 5px;
+            border-radius: 3px;
+            margin-top: 4px;
             width: 100%;
         }
 
@@ -445,20 +467,20 @@
 
     <div class="summary">
         <div class="summary-item">
-            Total Camps
-            <div class="summary-value">7</div>
+            Total Items
+            <div class="summary-value">9</div>
         </div>
         <div class="summary-item">
             Date Range
-            <div class="summary-value">Jun 29 - Aug 14</div>
+            <div class="summary-value">Jun 15 - Aug 25</div>
         </div>
         <div class="summary-item">
-            Total Cost (All)
+            Total Camp Cost
             <div class="summary-value">$1,858</div>
         </div>
         <div class="summary-item">
-            Avg Price
-            <div class="summary-value">$265</div>
+            School Starts
+            <div class="summary-value">Aug 25</div>
         </div>
     </div>
 
@@ -471,7 +493,11 @@
     <!-- Calendar View -->
     <div id="calendar" class="view-container active">
         <div class="camp-legend">
-            📌 Highlighted dates show which camps are running. Click on a highlighted day to see camp details.
+            🔵 <span style="color: #2196F3; font-weight: 700;">■ Half-Day Camps</span> | 
+            🟣 <span style="color: #9C27B0; font-weight: 700;">■ Full-Day Camps</span> | 
+            🔴 <span style="color: #f44336; font-weight: 700;">■ School Days</span> | 
+            🟠 <span style="color: #ff9800; font-weight: 700;">■ Vacation</span> | 
+            Click on any highlighted day for details
         </div>
         <div class="calendar-months" id="calendarMonths"></div>
     </div>
@@ -523,6 +549,16 @@ const camps = [
         duration: "TBD"
     },
     {
+        name: "Family Vacation",
+        dateRange: "Jul 1 - 6",
+        time: "All Day",
+        price: 0,
+        location: "Vacation",
+        sortDate: new Date(2026, 6, 1),
+        endDate: new Date(2026, 6, 6),
+        duration: "Full-Day"
+    },
+    {
         name: "Triangle Rock Club",
         dateRange: "Jul 13 - 17",
         time: "12:30 PM - 4:00 PM",
@@ -571,6 +607,16 @@ const camps = [
         sortDate: new Date(2026, 7, 10),
         endDate: new Date(2026, 7, 14),
         duration: "TBD"
+    },
+    {
+        name: "School Starts - 1st/2nd Grade & K",
+        dateRange: "Aug 25",
+        time: "School Hours",
+        price: 0,
+        location: "Highcroft Elementary",
+        sortDate: new Date(2026, 7, 25),
+        endDate: new Date(2026, 7, 25),
+        duration: "Full-Day"
     }
 ];
 
@@ -645,8 +691,23 @@ function renderCalendar() {
             const dateKey = date.toISOString().split('T')[0];
             const campsOnDay = campsByDate[dateKey] || [];
             const hasCamp = campsOnDay.length > 0;
+            
+            // Determine day type for styling
+            let dayClass = '';
+            if (hasCamp) {
+                const hasVacation = campsOnDay.some(c => c.name.includes('Vacation'));
+                const hasSchool = campsOnDay.some(c => c.name.includes('School'));
+                const hasHalfDay = campsOnDay.some(c => c.duration === 'Half-Day');
+                const hasFullDay = campsOnDay.some(c => c.duration === 'Full-Day');
+                
+                if (hasVacation) dayClass = 'has-vacation';
+                else if (hasSchool) dayClass = 'has-school';
+                else if (hasHalfDay) dayClass = 'has-half-day';
+                else if (hasFullDay) dayClass = 'has-full-day';
+                else dayClass = 'has-camp';
+            }
 
-            html += `<div class="calendar-day ${hasCamp ? 'has-camp' : ''}" onclick="showDayDetails('${dateKey}')">
+            html += `<div class="calendar-day ${dayClass}" onclick="showDayDetails('${dateKey}')">
                 <div class="day-number">${day}</div>`;
             
             if (hasCamp) {
@@ -654,9 +715,11 @@ function renderCalendar() {
                     const campName = camp.name.replace(' - Week ', ' W').split(' ').slice(0, 2).join(' ');
                     html += `<div class="camp-indicator">${campName}</div>`;
                 });
-                // Show total price for the day
+                // Show total price for the day (skip if vacation or school)
                 const totalPrice = campsOnDay.reduce((sum, camp) => sum + camp.price, 0);
-                html += `<div class="camp-price">$${totalPrice}</div>`;
+                if (totalPrice > 0) {
+                    html += `<div class="camp-price">$${totalPrice}</div>`;
+                }
                 // Show duration if available
                 if (campsOnDay[0].duration && campsOnDay[0].duration !== 'TBD') {
                     html += `<div class="camp-duration">${campsOnDay[0].duration}</div>`;
