@@ -231,6 +231,60 @@
             width: 100%;
         }
 
+        .booked-badge {
+            font-size: 9px;
+            background: #4CAF50;
+            color: white;
+            padding: 3px 4px;
+            border-radius: 3px;
+            margin-top: 2px;
+            width: 100%;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .booked-badge:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .not-booked-badge {
+            font-size: 9px;
+            background: #999;
+            color: white;
+            padding: 3px 4px;
+            border-radius: 3px;
+            margin-top: 2px;
+            width: 100%;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .not-booked-badge:hover {
+            background: #777;
+            transform: scale(1.05);
+        }
+
+        .booked-cell {
+            background: #c8e6c9;
+            color: #2e7d32;
+            font-weight: 600;
+            text-align: center;
+            padding: 6px !important;
+            border-radius: 4px;
+        }
+
+        .not-booked-cell {
+            background: #f5f5f5;
+            color: #666;
+            text-align: center;
+            padding: 6px !important;
+        }
+
         .camp-card {
             background: white;
             border-radius: 12px;
@@ -513,6 +567,7 @@
                         <th>Time</th>
                         <th>Price</th>
                         <th>Location</th>
+                        <th>Booked</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -536,17 +591,19 @@ const camps = [
         location: "The Hive",
         sortDate: new Date(2026, 5, 29),
         endDate: new Date(2026, 6, 2),
-        duration: "Half-Day"
+        duration: "Half-Day",
+        booked: false
     },
     {
         name: "Zebra Robotics Cary - Building Enthusiasts",
         dateRange: "Jun 15 - 19",
-        time: "TBD",
+        time: "12:30 PM - 4:00 PM",
         price: 350,
         location: "Zebra Robotics Cary",
         sortDate: new Date(2026, 5, 15),
         endDate: new Date(2026, 5, 19),
-        duration: "TBD"
+        duration: "Half-Day",
+        booked: false
     },
     {
         name: "Family Vacation",
@@ -556,7 +613,8 @@ const camps = [
         location: "Vacation",
         sortDate: new Date(2026, 6, 1),
         endDate: new Date(2026, 6, 6),
-        duration: "Full-Day"
+        duration: "Full-Day",
+        booked: true
     },
     {
         name: "Triangle Rock Club",
@@ -566,7 +624,8 @@ const camps = [
         location: "Triangle Rock Club",
         sortDate: new Date(2026, 6, 13),
         endDate: new Date(2026, 6, 17),
-        duration: "Half-Day"
+        duration: "Half-Day",
+        booked: false
     },
     {
         name: "Young Engineers Program - Week 6",
@@ -576,7 +635,8 @@ const camps = [
         location: "JL Taekwondo, Apex, NC 27502",
         sortDate: new Date(2026, 6, 20),
         endDate: new Date(2026, 6, 24),
-        duration: "TBD"
+        duration: "TBD",
+        booked: false
     },
     {
         name: "Young Engineers Program - Week 7",
@@ -586,7 +646,8 @@ const camps = [
         location: "JL Taekwondo, Apex, NC 27502",
         sortDate: new Date(2026, 6, 27),
         endDate: new Date(2026, 6, 31),
-        duration: "TBD"
+        duration: "TBD",
+        booked: false
     },
     {
         name: "Young Engineers Program - Week 8",
@@ -596,7 +657,8 @@ const camps = [
         location: "JL Taekwondo, Apex, NC 27502",
         sortDate: new Date(2026, 7, 3),
         endDate: new Date(2026, 7, 7),
-        duration: "TBD"
+        duration: "TBD",
+        booked: false
     },
     {
         name: "Young Engineers Program - Week 9",
@@ -606,7 +668,8 @@ const camps = [
         location: "JL Taekwondo, Apex, NC 27502",
         sortDate: new Date(2026, 7, 10),
         endDate: new Date(2026, 7, 14),
-        duration: "TBD"
+        duration: "TBD",
+        booked: false
     },
     {
         name: "School Starts - 1st/2nd Grade & K",
@@ -616,7 +679,8 @@ const camps = [
         location: "Highcroft Elementary",
         sortDate: new Date(2026, 7, 25),
         endDate: new Date(2026, 7, 25),
-        duration: "Full-Day"
+        duration: "Full-Day",
+        booked: true
     }
 ];
 
@@ -724,6 +788,12 @@ function renderCalendar() {
                 if (campsOnDay[0].duration && campsOnDay[0].duration !== 'TBD') {
                     html += `<div class="camp-duration">${campsOnDay[0].duration}</div>`;
                 }
+                // Show booking status
+                if (campsOnDay[0].booked) {
+                    html += `<div class="booked-badge" onclick="toggleBooked('${campsOnDay[0].name}'); event.stopPropagation();">✓ Booked</div>`;
+                } else {
+                    html += `<div class="not-booked-badge" onclick="toggleBooked('${campsOnDay[0].name}'); event.stopPropagation();">○ Not Booked</div>`;
+                }
             }
             
             html += `</div>`;
@@ -811,6 +881,7 @@ function showDayDetails(dateKey) {
             if (camp.duration && camp.duration !== 'TBD') {
                 details += `⏱️ ${camp.duration}\n`;
             }
+            details += `${camp.booked ? '✓ Booked' : '○ Not Booked'}\n`;
             details += '\n';
         });
         alert(details);
@@ -826,6 +897,9 @@ function renderTable() {
             <td>${camp.time}</td>
             <td class="price-cell">$${camp.price.toFixed(2)}</td>
             <td>${camp.location}</td>
+            <td class="${camp.booked ? 'booked-cell' : 'not-booked-cell'}" onclick="toggleBooked('${camp.name}');" style="cursor: pointer;">
+                ${camp.booked ? '✓ Booked' : '○ Not Booked'}
+            </td>
         </tr>
     `).join('');
 }
@@ -855,6 +929,9 @@ function renderTimeline() {
                                 <span>⏰ ${camp.time}</span>
                                 <span>💰 $${camp.price.toFixed(2)}</span>
                                 <span>📍 ${camp.location}</span>
+                                <span style="font-weight: 700; margin-top: 4px; padding: 4px; background: ${camp.booked ? '#c8e6c9' : '#f5f5f5'}; border-radius: 3px; color: ${camp.booked ? '#2e7d32' : '#666'}; cursor: pointer;" onclick="toggleBooked('${camp.name}');">
+                                    ${camp.booked ? '✓ Booked' : '○ Not Booked'}
+                                </span>
                             </div>
                         </div>
                     `).join('')}
@@ -866,7 +943,41 @@ function renderTimeline() {
     container.innerHTML = html;
 }
 
+function toggleBooked(campName) {
+    const camp = camps.find(c => c.name === campName);
+    if (camp) {
+        camp.booked = !camp.booked;
+        // Save to localStorage
+        saveBookingStatus();
+        // Re-render all views
+        renderCalendar();
+        renderTable();
+        renderTimeline();
+    }
+}
+
+function saveBookingStatus() {
+    const bookingStatus = {};
+    camps.forEach(camp => {
+        bookingStatus[camp.name] = camp.booked;
+    });
+    localStorage.setItem('campBookingStatus', JSON.stringify(bookingStatus));
+}
+
+function loadBookingStatus() {
+    const saved = localStorage.getItem('campBookingStatus');
+    if (saved) {
+        const bookingStatus = JSON.parse(saved);
+        camps.forEach(camp => {
+            if (bookingStatus.hasOwnProperty(camp.name)) {
+                camp.booked = bookingStatus[camp.name];
+            }
+        });
+    }
+}
+
 // Initial render
+loadBookingStatus();
 renderCalendar();
 renderTable();
 renderTimeline();
